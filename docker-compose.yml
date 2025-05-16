@@ -6,7 +6,7 @@ services:
     image: farrasyakila/item-app:v1 #nama image yang digunakan
     container_name: item-app #nama container
     ports:
-      - "80:3000" #container dapat diakses pada port 80
+      - "80:8080" #container dapat diakses pada port 80
     depends_on:
       item-db:
         condition: service_healthy #memastikan bahwa container item-app hanya berjalan setelah container item-db berjalan
@@ -15,8 +15,6 @@ services:
   item-db:
     image: mongo:3 #nama image yang digunakan
     container_name: item-db #nama container
-    ports:
-      - "27017:27017" #memakai port default mongodb
     volumes: #volume yang digunakan
     - app-db:/data/db
     healthcheck: #menggunakan health check, memastikan container running dan berjalan lancar sebelum digunakan oleh container lain
