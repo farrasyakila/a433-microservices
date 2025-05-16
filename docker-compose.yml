@@ -1,0 +1,29 @@
+#versi docker compose yang digunakan
+version: '3.8'
+
+services:
+  item-app:
+    image: farrasyakila/item-app:v1 #nama image yang digunakan
+    container_name: item-app #nama container
+    ports:
+      - "80:3000" #container dapat diakses pada port 80
+    depends_on:
+      item-db:
+        condition: service_healthy #memastikan bahwa container item-app hanya berjalan setelah container item-db berjalan
+    restart: always #menerapkan policy selalu restart container jika container berhenti
+
+  item-db:
+    image: mongo:3 #nama image yang digunakan
+    container_name: item-db #nama container
+    ports:
+      - "27017:27017" #memakai port default mongodb
+    volumes: #volume yang digunakan
+    - app-db:/data/db
+    healthcheck: #menggunakan health check, memastikan container running dan berjalan lancar sebelum digunakan oleh container lain
+      test: ["CMD", "mongo", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes: #menggunakan volume bernama app-db
+  app-db:
