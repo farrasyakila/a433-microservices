@@ -4,7 +4,7 @@ metadata:
   name: karsajobs
   namespace: karsajobs
 spec:
-  type: ClusterIP
+  type: NodePort #menggunakan nodeport
   ports:
   - port: 8080
     targetPort: 8080

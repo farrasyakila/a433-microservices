@@ -4,7 +4,7 @@ metadata:
   name: karsajobs-ui
   namespace: karsajobs
 spec:
-  replicas: 1
+  replicas: 1 #jumlah desired state pod yang akan dibuat
   selector:
     matchLabels:
       app: karsajobs-ui
@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name:  karsajobs-ui
-        image: farrasyakila/karsajobs-ui:latest
+        image: farrasyakila/karsajobs-ui:latest #image yang digunakan
         env:
           - name: VUE_APP_BACKEND
             value: http://192.168.49.2:31206
@@ -27,4 +27,4 @@ spec:
             cpu: "0.1"
             memory: 150Mi
         ports:
-        - containerPort: 80
+        - containerPort: 8080
