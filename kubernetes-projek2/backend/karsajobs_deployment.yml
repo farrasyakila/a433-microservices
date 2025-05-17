@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: karsajobs
+  namespace: karsajobs
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: karsajobs
+  template:
+    metadata:
+      labels:
+        app: karsajobs
+    spec:
+      containers:
+      - name:  karsajobs
+        image: farrasyakila/karsajobs:latest
+        env:
+          - name: MONGO_PASS
+            valueFrom:
+              secretKeyRef:
+                key: MONGO_ROOT_PASSWORD
+                name: mongo-secret
+          - name: MONGO_USER
+            valueFrom:
+              secretKeyRef:
+                key: MONGO_ROOT_USERNAME
+                name: mongo-secret
+          - name: MONGO_HOST
+            value: mongo-karsajobs.svc.cluster.local
+          - name: APP_PORT
+            value: "8080"
+        resources:
+          limits:
+            cpu: "0.4"
+            memory: 500Mi
+          requests:
+            cpu: "0.1"
+            memory: 150Mi
+        ports:
+        - containerPort: 27017
