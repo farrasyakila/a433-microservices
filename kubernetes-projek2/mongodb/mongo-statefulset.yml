@@ -2,13 +2,13 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: mongo
-  namespace: karsajobs
+  namespace: karsajobs #objek ini masuk kedalam namespace karsajob
 spec:
   selector:
-    matchLabels:
+    matchLabels: #label yang akan menempel ke pod
       app: mongo
   serviceName: mongo
-  replicas: 2
+  replicas: 2 #jumlah pods yang akan dijalankan
   minReadySeconds: 10
   template:
     metadata:
@@ -18,14 +18,14 @@ spec:
       terminationGracePeriodSeconds: 10
       containers:
       - image: mongo
-        name: mysql
+        name: mongo #nama dari container
         env:
         - name: MONGO_INITDB_ROOT_USERNAME_FILE
           value: /etc/mongo-credentials/MONGO_ROOT_USERNAME
         - name: MONGO_INITDB_ROOT_PASSWORD_FILE
           value: /etc/mongo-credentials/MONGO_ROOT_PASSWORD
         ports:
-        - containerPort: 22017
+        - containerPort: 27017 #port yang digunakan
           name: mongo
         volumeMounts:
         - name: mongo-pv
@@ -38,3 +38,12 @@ spec:
       - name: mongo-pv
         persistentVolumeClaim:
           claimName: mongo-pvc
+      - name: mongo-secret
+        secret:
+          secretName: mongo-secret
+      - name: mongo-config
+        configMap:
+          name: mongo-config
+          items:
+            - key: mongo.conf
+              path: mongo.conf
