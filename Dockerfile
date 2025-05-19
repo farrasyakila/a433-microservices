@@ -1,0 +1,24 @@
+# install base image nodejs 
+FROM node:14
+
+# membuat working directory
+RUN mkdir -p /app
+
+# set working directory
+WORKDIR /app
+
+# copy source code ke working directory
+COPY . .
+
+# Menentukan env yang digunakan
+ENV PORT=3001
+ENV AMQP_URL="amqp://0.0.0.0:5672"
+
+# install dependency
+RUN npm install
+
+#expose port
+EXPOSE 3001
+
+#jalankan command
+CMD [ "npm", "start" ]
