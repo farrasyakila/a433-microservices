@@ -42,6 +42,10 @@ const createOrder = async order => {
     });
 };
 
+app.get("/", (req, res) => {
+  res.send("Service is up!");
+});
+
 app.listen(process.env.PORT, () => {
     console.log(`Server running at ${process.env.PORT}`);
 });
