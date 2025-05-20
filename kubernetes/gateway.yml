@@ -1,0 +1,43 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway #membuat entry poin http kedalam istio
+metadata:
+  name: order-gateway
+  namespace: ecommerce
+spec:
+  selector:
+    istio: ingressgateway # use istio default controller
+  servers:
+  - port: #membuat port http
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - "*"
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService #mengatur routing rules dari gateway ke service order
+metadata:
+  name: order-virtual
+  namespace: ecommerce
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - order-gateway
+  http:
+  - match:
+    - uri:
+        exact: /order
+    route:
+    - destination:
+        host: order
+        port:
+          number: 3000
+  - match:
+    - uri:
+        exact: /
+    route:
+    - destination:
+        host: order
+        port:
+          number: 3000

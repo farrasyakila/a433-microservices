@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: order
+  namespace: ecommerce
+spec:
+  type: ClusterIP
+  ports:
+  - name: http
+    port: 3000 #port yang digunakan oleh service order
+    targetPort: 3000
+  selector:
+    app: order
